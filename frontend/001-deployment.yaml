@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fk-frontend
+spec:
+  selector:
+    matchLabels:
+      app: fk-frontend
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: fk-frontend
+    spec:
+      containers:
+      - name: fk-frontend
+        image: docker.pkg.github.com/toresbe/docker_experiments/frontend:0.0.1-2
+        ports:
+          - name: web
+            containerPort: 3000
+      imagePullSecrets:
+        - name: regcred

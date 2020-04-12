@@ -1,0 +1,18 @@
+---
+kind: IngressRoute
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: fk-frontend
+  namespace: default
+
+spec:
+  entryPoints: 
+    - web
+  routes:
+  - match: Host(`kubetest.frikanalen.no`) 
+    kind: Rule
+    services:
+    - kind: Service
+      name: fk-frontend
+      scheme: http
+      port: 3000

@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: basic-auth
+spec:
+  basicAuth:
+    secret: authsecret
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authsecret
+  #  namespace: kube-system
+data:
+  users: YWRtaW46JGFwcjEkcFR3dkhKcDMkUC9IOHdvblRkUFQuWE1JSzg4Wm5wLwoK
