@@ -35,6 +35,7 @@ spec:
         - --api.dashboard=true
         - --ping=true
         - --providers.kubernetescrd
+        - --metrics.prometheus
         # Use log level= INFO or DEBUG
         - --log.level=DEBUG
         image: traefik:2.1.4
