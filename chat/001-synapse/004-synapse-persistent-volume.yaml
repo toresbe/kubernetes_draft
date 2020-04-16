@@ -1,0 +1,32 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: synapse-data
+  namespace: matrixorg
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1G
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/matrix-synapse-data"
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: synapse-data
+  namespace: matrixorg
+spec:
+  storageClassName: manual
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1G

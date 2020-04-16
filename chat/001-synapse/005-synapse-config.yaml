@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: synapse-config
+  namespace: matrixorg
+data:
+  homeserver.yaml: |
+      server_name: "frikanalen.no"
+      pid_file: /data/homeserver.pid
+      federation_ip_range_blacklist:
+        - '127.0.0.0/8'
+        - '10.0.0.0/8'
+        - '172.16.0.0/12'
+        - '192.168.0.0/16'
+        - '100.64.0.0/10'
+        - '169.254.0.0/16'
+        - '::1/128'
+        - 'fe80::/64'
+        - 'fc00::/7'
+      listeners:
+        - port: 8008
+          tls: false
+          type: http
+          x_forwarded: true
+          bind_addresses: ['127.0.0.1']
+          resources:
+            - names: [client, federation]
+              compress: false
+      admin_contact: 'mailto:toresbe@gmail.com'
+      acme:
+          enabled: false
+          port: 80
+          bind_addresses: ['0.0.0.0']
+          reprovision_threshold: 30
+          domain: matrix.example.com
+          account_key_file: /data/acme_account.key
+      ## Database ##
+      database:
+        # The database engine name
+        name: "sqlite3"
+        # Arguments to pass to the engine
+        args:
+          # Path to the database
+          database: "/data/homeserver.db"
+      log_config: "/config/frikanalen.no.log.config"
+      media_store_path: "/data/media_store"
+      report_stats: true
+      registration_shared_secret: "ikETg2w5U#I12^=hn3N:Shi.xAABrikDQ7;E+LIQqLn3G&Z:rp"
+      macaroon_secret_key: ":hWh=NNIz~gn.g=T@J4v7PeITXrJs:T07nzQ:zIXUfEsPURSK^"
+      form_secret: "u-rAg4CCe&3&Iw@:vSMw-a@NQu+MC2~6S#cs8NSBbewM*HeHkF"
+      signing_key_path: "/secrets/frikanalen.no.signing.key"
+      trusted_key_servers:
+        - server_name: "matrix.org"
+  frikanalen.no.log.config: |
+      version: 1
+      
+      formatters:
+          precise:
+              format: '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(request)s - %(message)s'
+      
+      filters:
+          context:
+              (): synapse.logging.context.LoggingContextFilter
+              request: ""
+      
+      handlers:
+          file:
+              class: logging.handlers.RotatingFileHandler
+              formatter: precise
+              filename: /data/homeserver.log
+              maxBytes: 104857600
+              backupCount: 10
+              filters: [context]
+              encoding: utf8
+          console:
+              class: logging.StreamHandler
+              formatter: precise
+              filters: [context]
+      
+      loggers:
+          synapse.storage.SQL:
+              # beware: increasing this to DEBUG will make synapse log sensitive
+              # information such as access tokens.
+              level: INFO
+      
+      root:
+          level: INFO
+          handlers: [file, console]
+      
+      disable_existing_loggers: false
