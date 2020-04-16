@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shaka-packager
+  namespace: streaming
+spec:
+  selector:
+    matchLabels:
+      app: shaka-packager
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: shaka-packager
+    spec:
+      volumes:
+      - name: shared-data
+        emptyDir: {}
+      containers:
+      - name: transcoder
+        image: jrottenberg/ffmpeg:4.1-alpine
+        command: [ "/bin/sh", "-c", "ffmpeg $FFMPEG_OPTIONS -i $SOURCE_URL $ENCODING_OPTIONS"]
+        env:
+          - name: ENCODING_OPTIONS
+            valueFrom:
+              configMapKeyRef:
+                name: ffmpeg-config
+                key: encoding_options
+          - name: SOURCE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: ffmpeg-config
+                key: source_url
+          - name: FFMPEG_OPTIONS
+            valueFrom:
+              configMapKeyRef:
+                name: ffmpeg-config
+                key: ffmpeg_options
+      - name: shaka-packager
+        image: google/shaka-packager:release-v2.4.2
+        command: ["/bin/sh", "-c", "packager $ARGUMENTS"]
+        workingDir: /stream
+        env:
+          - name: ARGUMENTS
+            valueFrom:
+              configMapKeyRef:
+                name: shaka-config
+                key: arguments
+        ports:
+        - containerPort: 9000
+          name: stream-1
+          protocol: UDP
+        - containerPort: 9001
+          name: stream-2
+          protocol: UDP
+        - containerPort: 9002
+          name: stream-3
+          protocol: UDP
+        - containerPort: 9003
+          name: stream-4
+          protocol: UDP
+        volumeMounts:
+        - name: shared-data
+          mountPath: /stream
+      - name: nginx
+        image: nginx
+        volumeMounts:
+        - name: shared-data
+          mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: 80
