@@ -26,6 +26,11 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 80
+  - name: synapse
+    nodePort: 30931
+    port: 8443
+    protocol: TCP
+    targetPort: 8443
   - name: websecure
     nodePort: 30584
     port: 443
