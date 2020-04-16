@@ -6,9 +6,9 @@ metadata:
   namespace: default
 spec:
   entryPoints: 
-    - web
+    - websecure
   routes:
-  - match: Host(`grafana.k8s.frikanalen.no`) 
+  - match: Host(`grafana.frikanalen.no`) 
     kind: Rule
     services:
     - kind: Service
@@ -16,3 +16,5 @@ spec:
       namespace: default
       scheme: http
       port: 3000
+  tls:
+    certResolver: default

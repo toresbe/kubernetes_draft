@@ -23,15 +23,15 @@ spec:
       - args:
         - --accesslog
         - --global.checknewversion=true
-        - --entryPoints.traefik.address=:8100
-        - --entryPoints.web.address=:80
-        #- --entryPoints.websecure.address=:443
-        #- --certificatesresolvers.default.acme.tlschallenge
+        - --entryPoints.traefik.address=0.0.0.0:8100
+        - --entryPoints.web.address=0.0.0.0:80
+        - --entryPoints.websecure.address=:443
         # Please note that this is the staging Let's Encrypt server configuration.
         # Once you get things working, you should remove that following line.
-        #- --certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-        #- --certificatesresolvers.default.acme.email=toresbe@gmail.com
-        #- --certificatesresolvers.default.acme.storage=acme.json
+        #- --certificatesresolvers.default.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+        - --certificatesresolvers.default.acme.tlschallenge
+        - --certificatesresolvers.default.acme.email=toresbe@gmail.com
+        - --certificatesresolvers.default.acme.storage=/acme/acme.json
         - --api.dashboard=true
         - --ping=true
         - --providers.kubernetescrd
@@ -58,9 +58,9 @@ spec:
         - containerPort: 80
           name: web
           protocol: TCP
-        #- containerPort: 443
-        #  name: websecure
-        #  protocol: TCP
+        - containerPort: 443
+          name: websecure
+          protocol: TCP
         readinessProbe:
           failureThreshold: 1
           httpGet:
@@ -74,6 +74,14 @@ spec:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        volumeMounts:
+          - name: storage-volume
+            mountPath: /acme
+            subPath: ""
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: traefik-acme-storage
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

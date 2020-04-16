@@ -8,7 +8,7 @@ spec:
   entryPoints: 
     - web
   routes:
-  - match: Host(`prometheus.k8s.frikanalen.no`) 
+  - match: Host(`prometheus.frikanalen.no`) 
     kind: Rule
     services:
     - kind: Service

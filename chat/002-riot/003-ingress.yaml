@@ -6,12 +6,14 @@ metadata:
   namespace: matrixorg
 spec:
   entryPoints: 
-    - web
+    - websecure
   routes:
-  - match: Host(`riot.frikanalen.no`) 
+  - match: Host(`matrix.frikanalen.no`) 
     kind: Rule
     services:
     - kind: Service
       name: riot
       scheme: http
       port: 8765
+  tls:
+    certResolver: default

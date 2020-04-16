@@ -13,7 +13,7 @@ data:
 #    --key /data/key.pem
   config.json: |
     {
-    "default_server_name": "frikanalen.no",
+    "default_server_name": "matrix.frikanalen.no:8008",
     "brand": "Riot",
     "integrations_ui_url": "https://scalar-staging.vector.im/",
     "integrations_rest_url": "https://scalar-staging.vector.im/api",

@@ -32,6 +32,9 @@ spec:
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-datasources
             readOnly: false
+        env:
+          - name: GF_INSTALL_PLUGINS
+            value: "grafana-piechart-panel"
       volumes:
         - name: grafana-storage
           emptyDir: {}

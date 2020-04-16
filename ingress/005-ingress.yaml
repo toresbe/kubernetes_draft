@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - traefik
   routes:
-  - match: Host(`kubetest.frikanalen.no`)
+  - match: Host(`traefik.admin.frikanalen.no`)
     kind: Rule
     services:
     - name: api@internal

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: synapse
+  namespace: matrixorg
+spec:
+  selector:
+    service: synapse
+  ports:
+    - name: federation
+      protocol: TCP
+      port: 8448
+      targetPort: 8448
+    - name: client
+      protocol: TCP
+      port: 8008
+      targetPort: 8008
+  externalIPs:
+    - 192.168.3.100

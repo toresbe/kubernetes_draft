@@ -2,32 +2,32 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: synapse-data
-  namespace: matrixorg
+  name: traefik-acme-storage
+  namespace: kube-system
   labels:
     type: local
 spec:
   storageClassName: manual
   capacity:
-    storage: 1G
+    storage: 100Mi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/pv/matrix"
-    #path: "/data/matrix-synapse-data"
+    path: "/data/traefik-acme-storage"
     type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: postgres
-  name: synapse-data
-  namespace: matrixorg
+    component: "server"
+    app: traefik
+  name: traefik-acme-storage
+  namespace: kube-system
 spec:
   storageClassName: manual
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1G
+      storage: "100Mi"
