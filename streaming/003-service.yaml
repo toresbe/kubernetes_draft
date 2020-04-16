@@ -8,18 +8,6 @@ spec:
   selector:
     app: shaka-packager
   ports:
-    - protocol: UDP
-      port: 9000
-      name: stream-1
-    - protocol: UDP
-      port: 9001
-      name: stream-2
-    - protocol: UDP
-      port: 9002
-      name: stream-3
-    - protocol: UDP
-      port: 9003
-      name: stream-4
     - protocol: TCP
       port: 80
       name: web

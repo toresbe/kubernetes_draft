@@ -46,19 +46,6 @@ spec:
               configMapKeyRef:
                 name: shaka-config
                 key: arguments
-        ports:
-        - containerPort: 9000
-          name: stream-1
-          protocol: UDP
-        - containerPort: 9001
-          name: stream-2
-          protocol: UDP
-        - containerPort: 9002
-          name: stream-3
-          protocol: UDP
-        - containerPort: 9003
-          name: stream-4
-          protocol: UDP
         volumeMounts:
         - name: shared-data
           mountPath: /stream
