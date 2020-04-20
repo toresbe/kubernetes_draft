@@ -1,5 +1,4 @@
-# docker_experiments
-Some experiments with Frikanalen/Docker
+# kubernetes_draft
+Some experiments with Frikanalen/Docker/Kubernetes
 
-
-This repository will be deleted. It is only a placeholder so I can experiment with building Docker packages for use with Kubernetes without polluting the main Frikanalen repo
+This repository will be moved into a pull request for Frikanalen/frikanalen and subesequently deleted.
