@@ -13,11 +13,12 @@ spec:
       labels:
         app: shaka-packager
     spec:
+      restartPolicy: Always
       volumes:
       - name: shared-data
         emptyDir: {}
       containers:
-      - name: transcoder
+      - name: ffmpeg
         image: jrottenberg/ffmpeg:4.1-alpine
         command: [ "/bin/sh", "-c", "ffmpeg $FFMPEG_OPTIONS -i $SOURCE_URL $ENCODING_OPTIONS"]
         env:
@@ -38,7 +39,7 @@ spec:
                 key: ffmpeg_options
       - name: shaka-packager
         image: google/shaka-packager:release-v2.4.2
-        command: ["/bin/sh", "-c", "packager $ARGUMENTS"]
+        command: ["/bin/sh", "-c", "killall ffmpeg; packager $ARGUMENTS"]
         workingDir: /stream
         env:
           - name: ARGUMENTS
