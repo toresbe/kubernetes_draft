@@ -14,9 +14,8 @@ spec:
     spec:
       containers:
       - name: fk-frontend
-        image: docker.pkg.github.com/toresbe/docker_experiments/frontend:0.0.1-3
+        image: toresbe/fk-frontend:latest
+        imagePullPolicy: Always
         ports:
           - name: web
             containerPort: 3000
-      imagePullSecrets:
-        - name: regcred
