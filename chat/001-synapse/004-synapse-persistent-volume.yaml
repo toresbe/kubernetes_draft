@@ -1,31 +1,48 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+  namespace: matrixorg
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
 ---
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
   name: synapse-data
   namespace: matrixorg
+  annotations:
+    pv.beta.kubernetes.io/gid: "1234"
   labels:
     type: local
 spec:
-  storageClassName: manual
   capacity:
-    storage: 1G
+    storage: 1Gi
+  volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/pv/matrix"
-    #path: "/data/matrix-synapse-data"
-    type: DirectoryOrCreate
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /pv/matrix/
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - tx1
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: postgres
+    app: synapse
   name: synapse-data
   namespace: matrixorg
 spec:
-  storageClassName: manual
+  storageClassName: local-storage
   accessModes:
   - ReadWriteOnce
   resources:
