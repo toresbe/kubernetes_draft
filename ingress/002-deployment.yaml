@@ -1,3 +1,20 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  creationTimestamp: 2016-02-18T19:14:38Z
+  name: traefik
+  namespace: kube-system
+data:
+  traefik-config: |-
+    [entryPoints]
+      [entryPoints.web]
+      address = ":80"
+        [entryPoints.web.redirect]
+        regex = "^http://(.*)"
+        replacement = "https://$1"
+      [entryPoints.websecure]
+      address = ":443"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,7 +43,7 @@ spec:
         - --entryPoints.traefik.address=0.0.0.0:8100
         - --entryPoints.web.address=0.0.0.0:80
         - --entryPoints.websecure.address=:443
-        - --entryPoints.synapse.address=:8443
+        - --entryPoints.synapse.address=:8448
         # Please note that this is the staging Let's Encrypt server configuration.
         # Once you get things working, you should remove that following line.
         #- --certificatesresolvers.default.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
@@ -53,7 +70,7 @@ spec:
           timeoutSeconds: 2
         name: traefik
         ports:
-        - containerPort: 8443
+        - containerPort: 8448
           name: synapse
           protocol: TCP
         - containerPort: 8100
@@ -86,6 +103,12 @@ spec:
         - name: storage-volume
           persistentVolumeClaim:
             claimName: traefik-acme-storage
+        - name: config-volume
+          configMap:
+            name: traefik
+            items:
+              - key: traefik-config
+                path: traefik.toml
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

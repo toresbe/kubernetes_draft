@@ -30,7 +30,7 @@ spec:
     kind: Rule
     services:
     - kind: Service
-      name: fk-frontend
+      name: fk-frontend-staging
       scheme: http
       port: 3000
 ---
@@ -47,7 +47,7 @@ spec:
     kind: Rule
     services:
     - kind: Service
-      name: fk-frontend
+      name: fk-frontend-staging
       scheme: http
       port: 3000
   tls:

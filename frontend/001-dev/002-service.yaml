@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: fk-frontend
+  name: fk-frontend-staging
 spec:
   type: ClusterIP
   selector:
-    app: fk-frontend
+    app: fk-frontend-staging
   ports:
     # Three types of ports for a service
     # nodePort - a static port assigned on each the node

@@ -1,4 +1,3 @@
----
 kind: IngressRoute
 apiVersion: traefik.containo.us/v1alpha1
 metadata:
@@ -8,13 +7,13 @@ spec:
   entryPoints: 
     - synapse
   routes:
-  - match: Host(`matrix.frikanalen.no`) 
+  - match: Host(`frikanalen.no`)
     kind: Rule
     services:
     - kind: Service
       name: synapse
       namespace: matrixorg
       scheme: http
-      port: 8443
+      port: 8448
   tls:
     certResolver: default

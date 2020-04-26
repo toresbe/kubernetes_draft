@@ -18,7 +18,7 @@ data:
         - 'fe80::/64'
         - 'fc00::/7'
       listeners:
-        - port: 8443
+        - port: 8448
           tls: false
           type: http
           x_forwarded: true
@@ -34,14 +34,6 @@ data:
           reprovision_threshold: 30
           domain: matrix.example.com
           account_key_file: /data/acme_account.key
-      ## Database ##
-      database:
-        # The database engine name
-        name: "sqlite3"
-        # Arguments to pass to the engine
-        args:
-          # Path to the database
-          database: "/data/homeserver.db"
       log_config: "/config/frikanalen.no.log.config"
       media_store_path: "/data/media_store"
       enable_registration: true

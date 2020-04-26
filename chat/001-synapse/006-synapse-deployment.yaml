@@ -17,13 +17,20 @@ spec:
         - name: synapse
           image: matrixdotorg/synapse:latest
           ports:
-            - containerPort: 8443
+            - containerPort: 8448
               name: federation
           volumeMounts:
             - name: synapse-data
               mountPath: /data
             - name: synapse-config
-              mountPath: /config
+              mountPath: /config/frikanalen.no.log.config  
+              subPath: frikanalen.no.log.config  
+            - name: synapse-config
+              mountPath: /config/homeserver.yaml
+              subPath: homeserver.yaml
+            - name: pgsecret-for-synapse
+              mountPath: /config/database.yaml
+              subPath: database.yaml
             - name: synapse-secrets
               mountPath: /secrets
           env:
@@ -33,6 +40,9 @@ spec:
         - name: synapse-secrets
           secret:
             secretName: synapse-secrets
+        - name: pgsecret-for-synapse
+          secret:
+            secretName: pgsecret-for-synapse
         - name: synapse-config
           configMap:
             name: synapse-config

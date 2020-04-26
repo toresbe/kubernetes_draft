@@ -17,7 +17,7 @@ spec:
   entryPoints: 
     - websecure
   routes:
-  - match: (Host(`beta.frikanalen.no`) && PathPrefix(`/stream/`))
+  - match: (Host(`beta.frikanalen.no`) || Host(`frikanalen.no`)) && PathPrefix(`/stream/`)
     kind: Rule
     middlewares:
       - name: strip-media-prefix

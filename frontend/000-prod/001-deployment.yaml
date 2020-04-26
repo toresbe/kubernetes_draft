@@ -1,21 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fk-frontend
+  name: fk-frontend-prod
 spec:
   selector:
     matchLabels:
-      app: fk-frontend
+      app: fk-frontend-prod
   minReadySeconds: 5
   template:
     metadata:
       labels:
-        app: fk-frontend
+        app: fk-frontend-prod
     spec:
       containers:
-      - name: fk-frontend
-        image: toresbe/fk-frontend:latest
+      - name: fk-frontend-prod
+        image: toresbe/fk-frontend:0.0.1
         imagePullPolicy: Always
         ports:
           - name: web
             containerPort: 3000
+        envFrom:
+          - configMapRef:
+              name: frontend-prod-config
